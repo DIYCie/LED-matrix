@@ -1,0 +1,36 @@
+{
+  "name": "led-matrix",
+  "version": "1.0.0",
+  "description": "A framework for applications and games running on the DIYCie LED-matrix project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DIYCie/LED-matrix.git"
+  },
+  "keywords": [
+    "led",
+    "matrix",
+    "led-matrix",
+    "diycie",
+    "proto",
+    "utwente",
+    "create",
+    "creative",
+    "technology"
+  ],
+  "author": "DIYCie 2019-2020",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DIYCie/LED-matrix/issues"
+  },
+  "homepage": "https://github.com/DIYCie/LED-matrix#readme",
+  "dependencies": {
+    "@babel/preset-env": "^7.10.0",
+    "@babel/register": "^7.9.0",
+    "rpi-led-matrix": "^1.9.0",
+    "rpio": "^2.1.1"
+  }
+}
