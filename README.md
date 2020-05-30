@@ -4,11 +4,12 @@ A framework for applications and games for the LED-matrix machine of the DIYCie 
 ## System setup
 Before this application can run on the pi zero, a few things have to be changed on the system
 
-### Disable GPIO interrupts
+### Disable GPIO interrupts and Sound module
 
-Add the following line to `/boot/config.txt` and reboot:
+Add the following lines to `/boot/config.txt` and reboot:
 ```
 dtoverlay=gpio-no-irq
+dtparam=audio=off
 ```
 
 ### Enable /dev/gpiomem access
