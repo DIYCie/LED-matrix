@@ -7,7 +7,7 @@ let matrixColor = 0;
 
 let applications = [];
 
-fs.readdirSync(__dirname+'apps').forEach((file) => {
+fs.readdirSync(__dirname+'/apps').forEach((file) => {
 	let app = require('./apps/'+file);
 	if(app.prototype instanceof MatrixApplication) {
 		applications.push(app);
