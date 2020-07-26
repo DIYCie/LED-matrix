@@ -1,4 +1,4 @@
-import { MatrixApplication } from 'MatrixApplication';
+import { MatrixApplication } from '../MatrixApplication.js';
 class ExampleApp extends MatrixApplication {
     constructor(matrix) {
         super(matrix, "Example App", "An example application to help you get started");
