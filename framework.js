@@ -1,4 +1,6 @@
 import { GpioMapping, LedMatrix, LedMatrixUtils, MatrixOptions, PixelMapperType, RuntimeOptions }  from 'rpi-led-matrix';
+import { MatrixApplication } from "./MatrixApplication";
+
 const rpio = require('rpio');
 const fs = require('fs');
 
