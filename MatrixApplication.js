@@ -1,4 +1,4 @@
-class MatrixApplication {
+export class MatrixApplication {
     constructor(matrix, name, description) {
         this.matrix = matrix;
         this.name = name;

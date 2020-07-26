@@ -1,3 +1,4 @@
+import { MatrixApplication } from 'MatrixApplication';
 class ExampleApp extends MatrixApplication {
     constructor(matrix) {
         super(matrix, "Example App", "An example application to help you get started");
