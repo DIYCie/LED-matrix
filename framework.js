@@ -26,17 +26,20 @@ const matrix = new LedMatrix(
 
 console.log('Intialised matrix');
 
+// Initialise buttons
+console.log('Intialising buttons')
+rpio.init({ gpiomem: true });
+rpio.open(32, rpio.INPUT, rpio.PULL_UP);
+
 matrix.afterSync((mat, dt, t) => {
 	matrix.clear().brightness(10).fgColor(colors[matrixColor]).fill();
+	console.log(rpio.read(32));
 	setTimeout(() => matrix.sync(), 0);
 });
 
 matrix.sync();
 
-// Initialise buttons
-console.log('Intialising buttons')
-rpio.open(32, rpio.INPUT, rpio.PULL_UP);
-
+/*
 function pollButtons(pin) {
 	rpio.msleep(20);
 	if (rpio.read(pin)) return;
@@ -45,3 +48,4 @@ function pollButtons(pin) {
 }
 
 rpio.poll(32, pollButtons, rpio.POLL_LOW);
+*/
