@@ -1,8 +1,20 @@
 import { GpioMapping, LedMatrix, LedMatrixUtils, MatrixOptions, PixelMapperType, RuntimeOptions }  from 'rpi-led-matrix';
 const rpio = require('rpio');
+const fs = require('fs');
 
 let colors = [0xC1FF00, 0xFF0000, 0x00FF00, 0x0000FF];
 let matrixColor = 0;
+
+let applications = [];
+
+fs.readdirSync(__dirname+'apps').forEach((file) => {
+	let app = require('./apps/'+file);
+	if(app.prototype instanceof MatrixApplication) {
+		applications.push(app);
+	}
+});
+
+let currentApp;
 
 console.log('Initialising matrix');
 
@@ -32,20 +44,22 @@ rpio.init({ gpiomem: true });
 rpio.open(32, rpio.INPUT, rpio.PULL_UP);
 
 matrix.afterSync((mat, dt, t) => {
-	matrix.clear().brightness(10).fgColor(colors[matrixColor]).fill();
+	mat.clear().brightness(10).fgColor(colors[matrixColor]).fill();
 	console.log(rpio.read(32));
-	setTimeout(() => matrix.sync(), 0);
+	if(currentApp) currentApp.draw(dt, t);
+	setTimeout(() => mat.sync(), 0);
 });
 
 matrix.sync();
 
-/*
-function pollButtons(pin) {
-	rpio.msleep(20);
-	if (rpio.read(pin)) return;
-	console.log('button pressed');
-	matrixColor = (matrixColor+1)%colors.length;
+function loadApp(app) {
+	currentApp = new app(matrix);
+	currentApp.setup();
 }
 
-rpio.poll(32, pollButtons, rpio.POLL_LOW);
-*/
+function buttonCheck() {
+
+}
+
+loadApp(applications[0]);
+
