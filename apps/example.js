@@ -8,7 +8,7 @@ class ExampleApp extends MatrixApplication {
         super.setup();
         this.colors = [0xFF0000, 0x00FF00, 0x0000FF];
         this.colorIndex = 0;
-        this.interval = 100;
+        this.interval = 1000;
         this.prevTime = 0;
     }
 

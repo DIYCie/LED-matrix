@@ -46,7 +46,7 @@ rpio.init({ gpiomem: true });
 rpio.open(32, rpio.INPUT, rpio.PULL_UP);
 
 matrix.afterSync((mat, dt, t) => {
-	mat.clear().brightness(10).fgColor(colors[matrixColor]).fill();
+	//mat.clear().brightness(10).fgColor(colors[matrixColor]).fill();
 	console.log(rpio.read(32));
 	if(currentApp) currentApp.draw(dt, t);
 	setTimeout(() => mat.sync(), 0);
