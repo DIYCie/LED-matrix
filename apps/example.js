@@ -17,7 +17,7 @@ class ExampleApp extends MatrixApplication {
         if (time > this.prevTime+this.interval) {
             this.prevTime = time;
             this.colorIndex = (this.colorIndex+1)%this.colors.length;
-            this.matrix.fgColor(this.colors[this.colorIndex]).fill();
+            this.matrix.brightness(20).fgColor(this.colors[this.colorIndex]).fill();
         }
     }
 }
