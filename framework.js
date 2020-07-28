@@ -78,7 +78,9 @@ function buttonCheck() {
 	for(const key in Button) {
 		const button = Button[key];
 		const reading = rpio.read(button);
-		if(reading !== buttonStates[button]) {
+		if(button == Button.POWER && reading == true){
+			showMenu();
+		} else if(reading !== buttonStates[button]) {
 			if(reading) currentApp.onButtonReleased(button);
 			else currentApp.onButtonPressed(button);
 			buttonStates[button] = reading;
@@ -88,6 +90,10 @@ function buttonCheck() {
 
 function isPressed(button) {
 	return !rpio.read(button);
+}
+
+function showMenu() {
+	console.log('Menu')
 }
 
 loadApp(applications[0]);
