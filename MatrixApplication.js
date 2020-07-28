@@ -1,8 +1,17 @@
 class MatrixApplication {
-    constructor(matrix, name, description) {
+    static get name() { return 'App Name' }
+    static get description() { return 'App Description'}
+
+    constructor(matrix) {
         this.matrix = matrix;
-        this.name = name;
-        this.description = description;
+    }
+
+    getName() {
+        return this.name;
+    }
+
+    getDescription() {
+        return this.description;
     }
 
     setup() {
@@ -22,4 +31,4 @@ class MatrixApplication {
     }
 }
 
-export { MatrixApplication }
+export default MatrixApplication;
