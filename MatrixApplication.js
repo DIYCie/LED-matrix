@@ -12,6 +12,14 @@ class MatrixApplication {
     draw(dt, t) {
         // Add draw code
     }
+
+    onButtonPressed(button) {
+        // Add button code
+    }
+
+    onButtonReleased(button) {
+        // Add button code
+    }
 }
 
 export { MatrixApplication }

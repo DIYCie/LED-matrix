@@ -1,4 +1,5 @@
 import { MatrixApplication } from '../MatrixApplication';
+import Button from "../Button";
 class ExampleApp extends MatrixApplication {
     constructor(matrix) {
         super(matrix, "Example App", "An example application to help you get started");
@@ -16,8 +17,19 @@ class ExampleApp extends MatrixApplication {
         super.draw();
         if (time > this.prevTime+this.interval) {
             this.prevTime = time;
+        }
+        this.matrix.brightness(20).fgColor(this.colors[this.colorIndex]).fill();
+    }
+
+    onButtonPressed(button) {
+        if(button === Button.UP) {
             this.colorIndex = (this.colorIndex+1)%this.colors.length;
-            this.matrix.brightness(20).fgColor(this.colors[this.colorIndex]).fill();
+        }
+    }
+
+    onButtonReleased(button) {
+        if(button === Button.DOWN) {
+            this.colorIndex = (this.colorIndex+1)%this.colors.length;
         }
     }
 }
