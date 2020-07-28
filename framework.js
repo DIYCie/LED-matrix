@@ -1,8 +1,26 @@
-import { GpioMapping, LedMatrix, LedMatrixUtils, MatrixOptions, PixelMapperType, RuntimeOptions }  from 'rpi-led-matrix';
-const rpio = require('rpio');
+import { GpioMapping, LedMatrix, LedMatrixUtils, MatrixOptions, PixelMapperType, RuntimeOptions, Font }  from 'rpi-led-matrix';
+import { MatrixApplication } from "./MatrixApplication";
 
-let colors = [0xC1FF00, 0xFF0000, 0x00FF00, 0x0000FF];
-let matrixColor = 0;
+const rpio = require('rpio');
+const fs = require('fs');
+
+import Button from "./Button";
+
+let buttonStates = {};
+for(const key in Button) {
+	buttonStates[Button[key]] = false;
+}
+
+let applications = [];
+
+fs.readdirSync(__dirname+'/apps').forEach((file) => {
+	let app = require('./apps/'+file);
+	if(app.prototype instanceof MatrixApplication) {
+		applications.push(app);
+	}
+});
+
+let currentApp;
 
 console.log('Initialising matrix');
 
@@ -26,22 +44,52 @@ const matrix = new LedMatrix(
 
 console.log('Intialised matrix');
 
+// Initialise buttons
+console.log('Intialising buttons')
+rpio.init({ gpiomem: true });
+
+for(const key in Button) {
+	rpio.open(Button[key], rpio.INPUT, rpio.PULL_UP);
+}
+
+//const nameFont = new Font('4x6',`${process.cwd()}/fonts/4x6.bdf`)
+
 matrix.afterSync((mat, dt, t) => {
-	matrix.clear().brightness(10).fgColor(colors[matrixColor]).fill();
-	setTimeout(() => matrix.sync(), 0);
+	//mat.clear().brightness(10).fgColor(colors[matrixColor]).fill();
+	if(currentApp) {
+		buttonCheck();
+		currentApp.draw(dt, t);
+	} else {
+		applications.forEach(app => {
+			//matrix.font(nameFont);
+			//matrix.fgColor(0xFF).drawText(app.name, 0, 0);
+		})
+	}
+	setTimeout(() => mat.sync(), 0);
 });
 
 matrix.sync();
 
-// Initialise buttons
-console.log('Intialising buttons')
-rpio.open(32, rpio.INPUT, rpio.PULL_UP);
-
-function pollButtons(pin) {
-	rpio.msleep(20);
-	if (rpio.read(pin)) return;
-	console.log('button pressed');
-	matrixColor = (matrixColor+1)%colors.length;
+function loadApp(app) {
+	currentApp = new app(matrix);
+	currentApp.setup();
 }
 
-rpio.poll(32, pollButtons, rpio.POLL_LOW);
+function buttonCheck() {
+	for(const key in Button) {
+		const button = Button[key];
+		const reading = rpio.read(button);
+		if(reading !== buttonStates[button]) {
+			if(reading) currentApp.onButtonReleased(button);
+			else currentApp.onButtonPressed(button);
+			buttonStates[button] = reading;
+		}
+	}
+}
+
+function isPressed(button) {
+	return !rpio.read(button);
+}
+
+loadApp(applications[0]);
+
