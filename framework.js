@@ -31,7 +31,6 @@ const matrix = new LedMatrix(
 		cols: 64,
 		chainLength: 1,
 		hardwareMapping: GpioMapping.Regular,
-		parallel: 3,
 		pixelMapperConfig: LedMatrixUtils.encodeMappers({
 			type: PixelMapperType.ChainLink
 		})
