@@ -32,6 +32,7 @@
     "@babel/core": "^7.10.0",
     "@babel/preset-env": "^7.10.0",
     "@babel/register": "^7.9.0",
+    "globby": "^11.0.1",
     "rpi-led-matrix": "^1.9.0",
     "rpio": "^2.1.1"
   }

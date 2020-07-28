@@ -1,7 +1,7 @@
 import MatrixApplication from '../MatrixApplication';
 import Button from "../Button";
-class ExampleApp extends MatrixApplication {
-    static get name() { return 'Example App'; }
+class Example2App extends MatrixApplication {
+    static get name() { return 'Example 2'; }
     static get description() { return 'An example application'; }
 
     constructor(matrix) {
@@ -37,4 +37,4 @@ class ExampleApp extends MatrixApplication {
     }
 }
 
-module.exports = ExampleApp;
+module.exports = Example2App;
