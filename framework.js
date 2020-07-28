@@ -68,9 +68,8 @@ matrix.afterSync((mat, dt, t) => {
 	if(currentApp) {
 		currentApp.draw(dt, t);
 	} else {
+		matrix.font(nameFont).fgColor(0xFF).brightness(255);
 		applications.forEach(app => {
-			matrix.font(nameFont);
-			matrix.fgColor(0xFF)
 			const appIndex = applications.indexOf(app);
 			const indicator = appIndex === appSelectionIndex ? '> ' : '  ';
 			matrix.drawText(indicator + app.name, 0, appIndex * nameFont.height());
@@ -103,7 +102,7 @@ function buttonCheck() {
 		const reading = rpio.read(button);
 		if(reading !== buttonStates[button]) {
 			if(currentApp) {
-        if(button == Button.POWER && reading == false) showMenu();
+        if(button === Button.POWER && reading == false) showMenu();
 				else if(reading) currentApp.onButtonReleased(button);
 				else currentApp.onButtonPressed(button);
 			} else {
@@ -126,7 +125,7 @@ function isPressed(button) {
 	return !rpio.read(button);
 }
 function showMenu() {
-	console.log('Menu')
+	currentApp = undefined;
 }
 
 //loadApp(applications[0]);
