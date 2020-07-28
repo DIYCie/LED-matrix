@@ -35,7 +35,6 @@ const matrix = new LedMatrix(
 		cols: 64,
 		chainLength: 1,
 		hardwareMapping: GpioMapping.Regular,
-		parallel: 3,
 		pixelMapperConfig: LedMatrixUtils.encodeMappers({
 			type: PixelMapperType.ChainLink
 		})
@@ -104,7 +103,8 @@ function buttonCheck() {
 		const reading = rpio.read(button);
 		if(reading !== buttonStates[button]) {
 			if(currentApp) {
-				if(reading) currentApp.onButtonReleased(button);
+        if(button == Button.POWER && reading == false) showMenu();
+				else if(reading) currentApp.onButtonReleased(button);
 				else currentApp.onButtonPressed(button);
 			} else {
 				if (button === Button.UP && reading == true) {
@@ -124,6 +124,9 @@ function buttonCheck() {
 
 function isPressed(button) {
 	return !rpio.read(button);
+}
+function showMenu() {
+	console.log('Menu')
 }
 
 //loadApp(applications[0]);
