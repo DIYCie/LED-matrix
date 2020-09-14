@@ -1,6 +1,15 @@
-import {Font, GpioMapping, LedMatrix, LedMatrixUtils, PixelMapperType} from 'rpi-led-matrix';
+import {
+	Font,
+	GpioMapping,
+	HorizontalAlignment,
+	LayoutUtils,
+	LedMatrix,
+	LedMatrixUtils,
+	PixelMapperType, VerticalAlignment
+} from 'rpi-led-matrix';
 import MatrixApplication from "./MatrixApplication";
 import Button from "./Button";
+import { exec } from 'child_process';
 
 const rpio = require('rpio');
 const fs = require('fs');
@@ -19,6 +28,8 @@ fs.readdirSync(__dirname+'/apps').forEach((file) => {
 		applications.push(app);
 	}
 });
+
+applications.push({name: 'shutdown'});
 
 let appSelectionIndex = 0;
 
@@ -72,7 +83,11 @@ matrix.afterSync((mat, dt, t) => {
 		applications.forEach(app => {
 			const appIndex = applications.indexOf(app);
 			const indicator = appIndex === appSelectionIndex ? '> ' : '  ';
-			matrix.drawText(indicator + app.name, 0, appIndex * nameFont.height());
+			const lines = LayoutUtils.textToLines(nameFont, matrix.width(), indicator + app.name);
+			const glyphs = LayoutUtils.linesToMappedGlyphs([lines[0]], nameFont.height(), matrix.width(), nameFont.height(), HorizontalAlignment.Left, VerticalAlignment.Top);
+			glyphs.forEach(glyph => {
+				matrix.drawText(glyph.char, glyph.x, glyph.y+appIndex*nameFont.height());
+			});
 		})
 	}
 	setTimeout(() => mat.sync(), 0);
@@ -81,8 +96,11 @@ matrix.afterSync((mat, dt, t) => {
 matrix.sync();
 
 function loadApp(app) {
-	currentApp = new app(matrix);
-	currentApp.setup();
+	if(app.name === 'shutdown') shutdown()
+	else {
+		currentApp = new app(matrix);
+		currentApp.setup();
+	}
 }
 
 function loadFont(fontName) {
@@ -126,6 +144,12 @@ function isPressed(button) {
 }
 function showMenu() {
 	currentApp = undefined;
+}
+
+// Create shutdown function
+function shutdown(){
+	exec('shutdown -h now');
+	process.exit();
 }
 
 //loadApp(applications[0]);
