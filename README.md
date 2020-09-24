@@ -16,7 +16,7 @@ dtoverlay=gpio-no-irq
 ### Enable /dev/gpiomem access
 Your user will need to be a member of the `gpio` group:
 ```console
-$ sudo usermod -a -G gpio pi
+$ sudo usermod -a -G gpio root
 ```
 and you need to configure udev with the following commands:
 ```console
